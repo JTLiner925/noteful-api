@@ -1,55 +1,49 @@
-const { expect } = require('chai')
-const knex = require('knex')
-const app = require('../src/app')
-const { makeNotesArray } = require('./note.fixtures')
-const { makeFoldersArray } = require('./folder.fixtures')
+const { expect } = require("chai");
+const knex = require("knex");
+const app = require("../src/app");
+const { makeNotesArray } = require("./note.fixtures");
+const { makeFoldersArray } = require("./folder.fixtures");
 
-describe('Noteful Endpoints', function() {
-  let db 
+describe("Noteful Endpoints", function () {
+  let db;
 
-  before('make knex instance', () => {
+  before("make knex instance", () => {
     db = knex({
-      client: 'pg',
+      client: "pg",
       connection: process.env.TEST_DB_URL,
-    })
-    app.set('db', db);
-  })
+    });
+    app.set("db", db);
+  });
 
-  after('disconnect from db', () => db.destroy())
+  after("disconnect from db", () => db.destroy());
 
-  before('clean the table', () => db('folder').truncate())
+  before("clean the table", () =>
+    db.raw("TRUNCATE folders, notes RESTART IDENTITY CASCADE")
+  );
 
-  afterEach('cleanup',() => db('folder').truncate())
+  afterEach("cleanup", () =>
+    db.raw("TRUNCATE folders, notes RESTART IDENTITY CASCADE")
+  );
 
-  describe(`GET /api/folder`, () => {
-    context(`Given no folder`, () => {
+  describe(`GET /api/folders`, () => {
+    context(`Given no folders`, () => {
       it(`responds with 200 and an empty list`, () => {
-        return supertest(app)
-          .get('/api/folder')
-          .set("Authorization", `Bearer ${process.env.API_TOKEN}`)
-          .expect(200, [])
-      })
-    })
+        return supertest(app).get("/api/folders").expect(200, []);
+      });
+    });
 
-    // describe(`GET /api/folder`, () => {
-    //   context('Given there are folders in the database', () => {
-    //     const testFolders = makeFoldersArray()
-  
-    //     beforeEach('insert folders', () => {
-    //       return db
-    //         .into('folders')
-    //         .insert(testFolders)
-    //     })
-  
-    //     it('responds with 200 and all of the folders', () => {
-    //       return supertest(app)
-    //         .get('/api/folder')
-    //         .expect(200, testFolders)
-    //     })
-    //   })
-    // })
+    describe(`GET /api/folders`, () => {
+      context("Given there are folders in the database", () => {
+        const testFolders = makeFoldersArray();
 
-  })
+        beforeEach("insert folders", () => {
+          return db.into("folders").insert(testFolders);
+        });
 
-
-})
+        it("responds with 200 and all of the folders", () => {
+          return supertest(app).get("/api/folders").expect(200, testFolders);
+        });
+      });
+    });
+  });
+});

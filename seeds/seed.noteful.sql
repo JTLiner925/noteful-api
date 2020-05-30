@@ -1,13 +1,13 @@
-TRUNCATE note, folder RESTART IDENTITY CASCADE;
+TRUNCATE notes, folders RESTART IDENTITY CASCADE;
 
-INSERT INTO folder
+INSERT INTO folders
 (id, folder_name)
 VALUES
 ('1', 'Important'),
 ('2', 'Super'),
 ('3', 'Spangley');
 
-INSERT INTO note
+INSERT INTO notes
 (id, note_name, modified, folder_id, content)
 VALUES
 ('11',
