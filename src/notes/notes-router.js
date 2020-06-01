@@ -59,6 +59,7 @@ notesRouter.route('/:note_id')
 })
 .delete((req, res, next) => {
   const { note_id } = req.params;
+  console.log('delete note id')
   NotesService.deleteNote(req.app.get('db'), note_id)
     .then((numRowAffected) => {
       res.status(204).end();
