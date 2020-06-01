@@ -24,7 +24,6 @@ notesRouter
     .catch(next)
 })
 .post(jsonParser, (req, res, next) => {
-  console.log(req.body)
   const { note_name, content, folder_id } = req.body;
   const newNote = { note_name, content, folder_id };
 
@@ -59,7 +58,6 @@ notesRouter.route('/:note_id')
 })
 .delete((req, res, next) => {
   const { note_id } = req.params;
-  console.log('delete note id')
   NotesService.deleteNote(req.app.get('db'), note_id)
     .then((numRowAffected) => {
       res.status(204).end();
