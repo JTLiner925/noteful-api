@@ -15,8 +15,17 @@ app.use(morgan((NODE_ENV === 'production') ? 'tiny' : 'common', {
 app.use(helmet());
 app.use(cors());
 app.use((req, res, next) => {
-  res.setHeader('Access-Control-Allow-Origin', '*')
-})
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader(
+    "Access-Control-Allow-Methods",
+    "OPTIONS, GET, POST, PUT, PATCH, DELETE, OPTIONS"
+  );
+  res.setHeader(
+    "Access-Control-Allow-Headers",
+    "Content-Type,append,delete,entries,foreach,get,has,keys,set,values, Authorization"
+  );
+  next();
+});
 
 app.use('/api/folders', foldersRouter)
 app.use('/api/notes', notesRouter)
