@@ -24,6 +24,10 @@ app.use((req, res, next) => {
     "Access-Control-Allow-Headers",
     "Content-Type,append,delete,entries,foreach,get,has,keys,set,values, Authorization"
   );
+  res.setHeader(
+    "Access-Control-Allow-Origin", 
+    "https://noteful-two-pearl.now.sh/"
+  )
   next();
 });
 
