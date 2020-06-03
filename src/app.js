@@ -12,7 +12,9 @@ const app = express();
 app.use(morgan((NODE_ENV === 'production') ? 'tiny' : 'common', {
   skip: () => NODE_ENV === 'test'
 }))
-app.use(cors());
+app.use(cors({
+  origin:'*'
+}));
 app.use(helmet());
 
 app.use((req, res, next) => {
