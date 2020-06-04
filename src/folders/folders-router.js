@@ -52,8 +52,8 @@ foldersRouter.route("/:id").all((req, res, next) => {
       next();
     })
     .catch(next);
-});
-// .get((req, res) => {
-//   res.json(serializeFolder(res.folder));
-// })
+})
+.get((req, res) => {
+  res.json(serializeFolder(res.folder));
+})
 module.exports = foldersRouter;
