@@ -1,4 +1,3 @@
-
 const express = require("express");
 const xss = require("xss");
 const FoldersService = require("./folders-service");
@@ -14,9 +13,8 @@ const serializeFolder = (folder) => ({
 foldersRouter
   .route("/")
   .get((req, res, next) => {
-    
     const knexInstance = req.app.get("db");
-    console.log(req.app.get("db"))
+    console.log(req.app.get("db"));
     FoldersService.getAllFolders(knexInstance)
       .then((folders) => {
         res.json(folders.map(serializeFolder));
@@ -34,26 +32,26 @@ foldersRouter
         });
     FoldersService.insertFolder(req.app.get("db"), newFolder)
       .then((folder) => {
-        res
-          .status(201)
-          .json(serializeFolder(folder));
+        res.status(201).json(serializeFolder(folder));
       })
       .catch(next);
   });
-foldersRouter.route("/:id").all((req, res, next) => {
-  FoldersService.getById(req.app.get("db"), req.params.id)
-    .then((folder) => {
-      if (!folder) {
-        return res.status(404).json({
-          error: { message: `Folder doesn't exist` },
-        });
-      }
-      res.folder = folder;
-      next();
-    })
-    .catch(next);
-})
-.get((req, res) => {
-  res.json(serializeFolder(res.folder));
-})
+foldersRouter
+  .route("/:folder_id")
+  .all((req, res, next) => {
+    FoldersService.getById(req.app.get("db"), req.params.folder_id)
+      .then((folder) => {
+        if (!folder) {
+          return res.status(404).json({
+            error: { message: `Folder doesn't exist` },
+          });
+        }
+        res.folder = folder;
+        next();
+      })
+      .catch(next);
+  })
+  .get((req, res) => {
+    res.json(serializeFolder(res.folder));
+  });
 module.exports = foldersRouter;
