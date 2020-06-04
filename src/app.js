@@ -12,27 +12,10 @@ const app = express();
 app.use(morgan((NODE_ENV === 'production') ? 'tiny' : 'common', {
   skip: () => NODE_ENV === 'test'
 }))
-app.use(cors({
-  origin:'*'
-}));
+app.use(cors(
+  // {origin:'*'}
+  ));
 app.use(helmet());
-
-app.use((req, res, next) => {
-  res.setHeader("Access-Control-Allow-Origin", "*");
-  res.setHeader(
-    "Access-Control-Allow-Methods",
-    "OPTIONS, GET, POST, PUT, PATCH, DELETE, OPTIONS"
-  );
-  res.setHeader(
-    "Access-Control-Allow-Headers",
-    "Content-Type,append,delete,entries,foreach,get,has,keys,set,values, Authorization"
-  );
-  res.setHeader(
-    "Access-Control-Allow-Origin", 
-    "https://noteful-two-pearl.now.sh/"
-  )
-  next();
-});
 
 app.use('/api/folders', foldersRouter)
 app.use('/api/notes', notesRouter)

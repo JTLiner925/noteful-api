@@ -40,7 +40,7 @@ foldersRouter
       })
       .catch(next);
   });
-foldersRouter.route("/:folder_id").all((req, res, next) => {
+foldersRouter.route("/:id").all((req, res, next) => {
   FoldersService.getById(req.app.get("db"), req.params.id)
     .then((folder) => {
       if (!folder) {
